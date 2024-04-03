@@ -18,7 +18,9 @@ class EmissionListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-    Row(children: [SizedBox(width: 20),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [SizedBox(width: 20),
     Column(
           children: [
           IconButton(
@@ -36,7 +38,7 @@ class EmissionListView extends StatelessWidget {
             height: null,), 
         
           Column(children: [
-           Text('Welcome Back', style: TextStyle(fontSize: 24)), 
+           Text('Welcome Back'), 
            Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -69,7 +71,6 @@ class EmissionListView extends StatelessWidget {
               ),
               textStyle: MaterialStateProperty.all(
                 TextStyle(
-                  fontSize: 18, // Set text size to 18
                   fontWeight: FontWeight.bold, // Make text bold
                 ),
               ),
