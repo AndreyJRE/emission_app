@@ -54,6 +54,9 @@ class _MyHomePageState extends State<MainScreen> {
         case 1:
          page = AddView();
           break;
+        case 2:
+          page = CalendarScreen();
+          break;
         default:
 
       }
@@ -120,13 +123,13 @@ class _MyHomePageState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-      List<IconData> iconList = [Icons.add_box_outlined, Icons.announcement_outlined];
+      List<IconData> iconList = [Icons.add_box_outlined, Icons.announcement_outlined, Icons.ac_unit_outlined];
     return MaterialApp(
       theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 193, 154, 13)),
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
               useMaterial3: true,
               appBarTheme: const AppBarTheme(
-                backgroundColor: Color.fromARGB(255, 193, 154, 13),
+                backgroundColor: Colors.black,
               ),
             ),
 

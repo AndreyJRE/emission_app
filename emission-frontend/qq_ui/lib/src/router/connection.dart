@@ -8,3 +8,7 @@ Future<http.Response> testConnection() {
 printConnection(){
   testConnection().then((value) => print(value.body));
 }
+
+Future<http.Response> putUser(String username){
+  return http.put(Uri.parse('http://localhost:8080/v1/api/users/add?username=$username'));
+}
