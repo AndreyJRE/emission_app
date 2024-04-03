@@ -111,6 +111,7 @@ class _MyHomePageState extends State<MainScreen> {
             ),
 
             home: Scaffold(
+              resizeToAvoidBottomInset: false,
               body: page,
               floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
