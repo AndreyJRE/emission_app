@@ -3,11 +3,10 @@ spring:
   application:
     name: emission-backend
   datasource:
-    url: jdbc:postgresql://localhost:5432/emission_db
-    username: postgres
+    url: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+    username: postgres.lkrpcyqhmzrhrqzbolsb
+    password: x2c3v4b5n6m7
     driver-class-name: org.postgresql.Driver
-    password: hackathon
-
   jpa:
     database: POSTGRESQL
     hibernate:

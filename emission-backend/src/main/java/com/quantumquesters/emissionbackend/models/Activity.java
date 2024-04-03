@@ -1,14 +1,8 @@
 package com.quantumquesters.emissionbackend.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -18,28 +12,34 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Activity {
+
   @Id
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
+
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "userId", referencedColumnName = "userId")
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+  @JsonIgnore
   private User user;
 
-  @Column(name = "timestamp")
-  private LocalDateTime timestamp;
-
-  @PrePersist
-  public void prePersist() {
-    this.timestamp = LocalDateTime.now();
-  }
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "activityType")
+  @Column(name = "activity_type")
   private ActivityType activityType;
 
   @Column(name = "duration")
-  private Duration duration;
+  private long duration;
 
-  @Column(name = "co2InKg")
+  @Column(name = "co2")
   private Double co2InKg;
+
+  @PrePersist
+  public void prePersist() {
+    this.createdAt = LocalDateTime.now();
+  }
 
 
 }
