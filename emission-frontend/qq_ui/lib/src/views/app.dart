@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qq_ui/src/router/ActivityType.dart';
 import 'package:qq_ui/src/views/add_view.dart';
 import 'package:qq_ui/src/views/calendar_screen.dart';
+import 'package:qq_ui/src/views/friends_view.dart';
 import 'package:qq_ui/src/views/task_screen.dart';
 
 import '../sample_feature/sample_item_details_view.dart';
@@ -58,6 +59,9 @@ class _MyHomePageState extends State<MainScreen> {
           break;
         case 2:
           page = CalendarScreen();
+          break;
+        case 3:
+          page = FriendsView();
           break;
         default:
 
