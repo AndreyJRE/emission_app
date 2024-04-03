@@ -5,10 +5,9 @@ import com.quantumquesters.emissionbackend.service.dtos.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/users")
@@ -29,6 +28,21 @@ public class UserController {
                                           @RequestParam String friendUsername) {
         userService.addFriend(username, friendUsername);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<List<UserDto>> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getFriendsByUsername(username));
+    }
+
+    @GetMapping("/{username}/friends")
+    public ResponseEntity<List<UserDto>> getFriendsByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getFriendsByUsername(username));
     }
 
 
