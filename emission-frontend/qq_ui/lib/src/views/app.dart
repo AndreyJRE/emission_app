@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:qq_ui/src/views/add_view.dart';
 import 'package:qq_ui/src/views/calendar_screen.dart';
 import 'package:qq_ui/src/views/task_screen.dart';
 
@@ -51,7 +52,8 @@ class _MyHomePageState extends State<MainScreen> {
           page = EmissionListView();
           break;
         case 1:
-         page = CalendarScreen();
+         page = AddView();
+          break;
         default:
 
       }
