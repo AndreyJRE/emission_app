@@ -1,3 +1,4 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,6 +14,7 @@ import '../settings/settings_view.dart';
 /// 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key, required this.title});
+
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -85,56 +87,132 @@ class _MyHomePageState extends State<MainScreen> {
         });
   }
 
+  Route _createRoute(int page) {
+    switch(page){
+      case 0:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => EmissionListView(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return child;
+          },
+        );
+      case 1:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => CalendarScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return child;
+          },
+        );
+      default:
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => EmissionListView(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return child;
+          },
+        );
+
+    }
+}
+
 
 
   @override
   Widget build(BuildContext context) {
+      List<IconData> iconList = [Icons.add_box_outlined, Icons.announcement_outlined];
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 193, 154, 13)),
-        useMaterial3: true
-      ),
-      home: Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add_box_outlined),
-              activeIcon: Icon(Icons.add_box_rounded),
-              label: 'Tasks',
+              colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 193, 154, 13)),
+              useMaterial3: true,
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Color.fromARGB(255, 193, 154, 13),
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.announcement_outlined),
-              activeIcon: Icon(Icons.announcement_rounded),
-              label: 'Calendar',
+
+            home: Scaffold(
+                      appBar: AppBar(
+                // TRY THIS: Try changing the color here to a specific color (to
+                // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+                // change color while the other colors stay the same.
+                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                // Here we take the value from the MainScreen
+                // object that was created by
+                // the App.build method, and use it to set our appbar title.
+                title: Text(widget.title),
+              ),
+              body: page,
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: Offset(0, 2),
             ),
           ],
-          backgroundColor: Theme.of(context).primaryColor,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.black,
-          currentIndex: index,
-          onTap: ((value) => switchState(value)),
+          border: Border.all(
+            color: Colors.grey.shade300,
+            width: 2,
+          ),
         ),
-      
-        appBar: AppBar(
-          // TRY THIS: Try changing the color here to a specific color (to
-          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-          // change color while the other colors stay the same.
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          // Here we take the value from the MainScreen
-          // object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
-        ),
-        body: page,
-        floatingActionButton: FloatingActionButton(
+        child: FloatingActionButton(
+          shape: const CircleBorder(),
+          backgroundColor: Colors.white,
+          child: Icon(
+            Icons.add,
+            color: Colors.black,
+          ),
           onPressed: () => {},
-          tooltip: 'Add new Task',
-          child: const Icon(Icons.add),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
+        ),
       ),
-    );
+         bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+            itemCount: iconList.length,
+            backgroundColor: Colors.black,
+            tabBuilder: (int index, bool isActive) {
+              return Icon(
+                iconList[index],
+                size: 24,
+                color: isActive ? Colors.amber : Colors.white,
+              );},
+            activeIndex: index,
+            gapLocation: GapLocation.center,
+            notchSmoothness: NotchSmoothness.defaultEdge,
+            borderColor: Colors.grey.shade300,
+            borderWidth: 3,
+            notchMargin: 4,
+            leftCornerRadius: 0,
+            rightCornerRadius: 0,
+            onTap: (index) => switchState(index)),
+            //other params
+         ),
+
+              
+              /* BottomNavigationBar(
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.add_box_outlined),
+                    activeIcon: Icon(Icons.add_box_rounded),
+                    label: 'Emissions',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.announcement_outlined),
+                    activeIcon: Icon(Icons.announcement_rounded),
+                    label: 'Calendar',
+                  ),
+                ],
+                backgroundColor: Theme.of(context).primaryColor,
+                selectedItemColor: Colors.black,
+                unselectedItemColor: Colors.black,
+                currentIndex: index,
+                onTap: ((value) => switchState(value)),
+              ),*/
+          );
   }
 }
+
+
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
