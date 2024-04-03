@@ -7,8 +7,7 @@ import 'package:qq_ui/src/router/ActivityType.dart';
 import 'package:qq_ui/src/router/calculations.dart';
 
 final host = '134.155.225.194:8080';
-final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
-
+final headers = {'Content-Type': 'application/json'};
 Future<http.Response> testConnection() {
   return http.get(Uri.parse('$host/v1/api/test'));
 }
@@ -27,17 +26,18 @@ Future<http.Response> getAllUsers(){
 
 Future<http.Response> calculate(Calculation calculation) async {
 final jsonString = json.encode(calculation);
-print(jsonString);
 final uri = Uri.http(host, '/v1/api/emissions/calculate');
-final headers = {'Content-Type': 'application/json'};
+
 final response = await http.post(uri, headers: headers, body: jsonString);
 return response;
 }
+
+
 Future<http.Response> getActivities(){
   return http.get(Uri.parse('$host/v1/api/activities'));
 }
 Future<http.Response> addActivity(Calculation calculation) async {
-  Response response = await http.post(Uri.parse('$host/v1/api/activities/add'), body: json.encode(calculation), headers: headers);
+  Response response = await http.post(Uri.http('$host/v1/api/activities/add'), body: json.encode(calculation), headers: headers);
   return http.get(
     Uri.parse('$host/v1/api/emissions'),
     headers: <String, String>{
