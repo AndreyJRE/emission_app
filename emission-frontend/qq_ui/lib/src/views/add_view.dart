@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:qq_ui/src/router/ActivityType.dart';
+import 'package:qq_ui/src/router/calculations.dart';
+import 'package:qq_ui/src/router/connection.dart';
 import 'package:qq_ui/src/widget/emission_card.dart';
 
 class AddView extends StatefulWidget {
@@ -11,9 +15,15 @@ class _AddViewState extends State<AddView> {
   final List<EmissionCard> emissionsList = [EmissionCard(task: '100 Emissions',type: TYPE.WALK,),EmissionCard(task: '100 Emissions',type: TYPE.WALK,),EmissionCard(task: '100 Emissions',type: TYPE.TRAIN_LONG,),EmissionCard(task: '100 Emissions',type: TYPE.TRAIN_LONG,)];
   final int total = 0;
   final int produced = 0;
+  final TextEditingController controller = TextEditingController();
+  ActivityType activityType = ActivityType.WALK;
+  TextEditingController _distanceController = TextEditingController();
+  TextEditingController _occupancyController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: Center(
         child: Column(
           children: [
@@ -25,30 +35,43 @@ class _AddViewState extends State<AddView> {
                   child: Column(
                     children: [
                       TextField(
+                        controller: _distanceController,
                         decoration: InputDecoration(
-                          labelText: 'Enter a number',
+                          labelText: 'Enter the distance',
+                          suffix: Text(' km'),
                         ),
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                        ],
                       ),
                       SizedBox(height: 16.0),
-                      DropdownButtonFormField<String>(
-                        items: dropdownItems.map((String item) {
-                          return DropdownMenuItem<String>(
+                      DropdownButtonFormField<ActivityType>(
+                        items: ActivityType.values.map((item) {
+                          return DropdownMenuItem<ActivityType>(
                             value: item,
-                            child: Text(item),
+                            child: Text(item.name),
                           );
                         }).toList(),
                         decoration: InputDecoration(
                           labelText: 'Select an option',
                         ),
-                        onChanged: (String? value) {
-                          // Handle dropdown value change
+                        onChanged: (value) {
+                          setState(() {
+                            activityType = value!;
+                          });
                         },
                       ),
                       SizedBox(height: 16.0),
                       TextField(
+                        controller: _occupancyController,
                         decoration: InputDecoration(
-                          labelText: 'Enter personnel number',
+                          labelText: 'Enter the occupancy',
                         ),
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                        ],
                       ),
                       SizedBox(height: 16.0),
                       Align(
@@ -58,7 +81,7 @@ class _AddViewState extends State<AddView> {
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                // Handle submit button press
+                                checkforCalculation();
                               },
                               child: Icon(Icons.ad_units),
                             ),
@@ -106,5 +129,16 @@ class _AddViewState extends State<AddView> {
         ),
       ),
     );
+  }
+  
+  void checkforCalculation() {
+    if (_distanceController.text.isNotEmpty && _occupancyController.text.isNotEmpty) {
+      calculate(Calculation(activityType, _distanceController.text, _occupancyController.text)).then((value) {
+        print(value.body);
+      });
+      }
+       else {
+      // Show an error message
+    }
   }
 }

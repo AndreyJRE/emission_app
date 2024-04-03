@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:qq_ui/src/router/ActivityType.dart';
 import 'package:qq_ui/src/views/add_view.dart';
 import 'package:qq_ui/src/views/calendar_screen.dart';
 import 'package:qq_ui/src/views/task_screen.dart';
@@ -41,6 +42,7 @@ class _MyHomePageState extends State<MainScreen> {
        setState(() {
     creating = false;});
   }
+
   
 
   void switchState(int state) {
@@ -92,38 +94,13 @@ class _MyHomePageState extends State<MainScreen> {
         });
   }
 
-  Route _createRoute(int page) {
-    switch(page){
-      case 0:
-        return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => EmissionListView(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return child;
-          },
-        );
-      case 1:
-        return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => CalendarScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return child;
-          },
-        );
-      default:
-        return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => EmissionListView(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return child;
-          },
-        );
-
-    }
-}
-
 
 
   @override
   Widget build(BuildContext context) {
       List<IconData> iconList = [Icons.add_box_outlined, Icons.announcement_outlined, Icons.ac_unit_outlined,Icons.access_alarm_rounded];
+   
+
     return MaterialApp(
       theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
