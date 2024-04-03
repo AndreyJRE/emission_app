@@ -1,4 +1,4 @@
-package com.quantumquesters.emissionbackend.service.dtos;
+package com.quantumquesters.emissionbackend.service.dtos.companion;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quantumquesters.emissionbackend.models.ActivityType;

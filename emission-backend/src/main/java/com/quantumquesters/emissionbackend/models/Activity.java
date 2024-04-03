@@ -1,14 +1,8 @@
 package com.quantumquesters.emissionbackend.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -18,9 +12,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Activity {
+
   @Id
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
+
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+  @JsonIgnore
   private User user;
 
   @Column(name = "created_at")
@@ -31,7 +31,7 @@ public class Activity {
   private ActivityType activityType;
 
   @Column(name = "duration")
-  private Duration duration;
+  private long duration;
 
   @Column(name = "co2")
   private Double co2InKg;

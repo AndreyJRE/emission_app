@@ -1,8 +1,8 @@
 package com.quantumquesters.emissionbackend.service;
 
 
-import com.quantumquesters.emissionbackend.service.dtos.CompanionRequestDto;
-import com.quantumquesters.emissionbackend.service.dtos.CompanionResponseDto;
+import com.quantumquesters.emissionbackend.service.dtos.companion.CompanionRequestDto;
+import com.quantumquesters.emissionbackend.service.dtos.companion.CompanionResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,7 +15,7 @@ public class CompanionService {
     private final WebClient webClient;
 
 
-    public CompanionResponseDto getAmountOfEmission(CompanionRequestDto requestDto) {
+    public CompanionResponseDto calculateEmission(CompanionRequestDto requestDto) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/carbon/api/basic")

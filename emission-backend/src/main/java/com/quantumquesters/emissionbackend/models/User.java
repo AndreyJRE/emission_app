@@ -25,7 +25,7 @@ public class User {
   private Long userId;
 
   @Column(name = "username", length = 50, nullable = false, unique = true)
-  private String userName;
+  private String username;
 
   @OneToMany(mappedBy = "user")
   private Set<Activity> activities;
