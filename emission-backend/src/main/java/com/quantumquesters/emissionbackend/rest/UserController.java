@@ -36,8 +36,8 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<List<UserDto>> getUserByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getFriendsByUsername(username));
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
     @GetMapping("/{username}/friends")
