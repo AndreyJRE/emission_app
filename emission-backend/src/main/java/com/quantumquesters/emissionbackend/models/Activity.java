@@ -20,26 +20,26 @@ import lombok.Setter;
 public class Activity {
   @Id
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "userId", referencedColumnName = "userId")
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
   private User user;
 
-  @Column(name = "timestamp")
-  private LocalDateTime timestamp;
-
-  @PrePersist
-  public void prePersist() {
-    this.timestamp = LocalDateTime.now();
-  }
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "activityType")
+  @Column(name = "activity_type")
   private ActivityType activityType;
 
   @Column(name = "duration")
   private Duration duration;
 
-  @Column(name = "co2InKg")
+  @Column(name = "co2")
   private Double co2InKg;
+
+  @PrePersist
+  public void prePersist() {
+    this.createdAt = LocalDateTime.now();
+  }
 
 
 }

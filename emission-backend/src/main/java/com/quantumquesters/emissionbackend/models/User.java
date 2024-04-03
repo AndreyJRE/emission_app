@@ -17,10 +17,11 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "user")
+@Table(name = "users")
 public class User {
   @Id
   @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @Column(name = "user_id")
   private Long userId;
 
   @Column(name = "username", length = 50, nullable = false, unique = true)
