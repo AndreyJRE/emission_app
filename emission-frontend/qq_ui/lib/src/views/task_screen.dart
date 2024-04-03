@@ -29,8 +29,8 @@ class EmissionListView extends StatelessWidget {
               // background, the navigation stack is restored.
               Navigator.restorablePushNamed(context, SettingsView.routeName);
             },
-          ),
-        ],
+          ), 
+          ],
       ),
 
       // To work with lists that may contain a large number of items, it’s best
