@@ -2,14 +2,16 @@ package com.quantumquesters.emissionbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Activity {
 
   @Id
@@ -29,8 +31,8 @@ public class Activity {
   @Column(name = "activity_type")
   private ActivityType activityType;
 
-  @Column(name = "duration")
-  private long duration;
+  @Column(name = "distance")
+  private Double distance;
 
   @Column(name = "co2")
   private Double co2InKg;

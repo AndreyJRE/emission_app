@@ -27,7 +27,7 @@ class EmissionBackendApplicationTests {
 
 	@BeforeEach
 	void setUp() {
-		companionRequestDto = new CompanionRequestDto(ActivityType.CAR_DIESEL, 100, 1);
+		companionRequestDto = new CompanionRequestDto(ActivityType.CAR_DIESEL, 100.0, 1L);
 
 	}
 
