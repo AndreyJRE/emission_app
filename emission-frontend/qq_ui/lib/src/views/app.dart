@@ -124,9 +124,10 @@ class _MyHomePageState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
       List<IconData> iconList = [Icons.add_box_outlined, Icons.announcement_outlined, Icons.ac_unit_outlined,Icons.access_alarm_rounded];
+      
     return MaterialApp(
       theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.black, brightness: Brightness.dark,),
               useMaterial3: true,
               appBarTheme: const AppBarTheme(
                 backgroundColor: Colors.black,
@@ -134,16 +135,6 @@ class _MyHomePageState extends State<MainScreen> {
             ),
 
             home: Scaffold(
-                      appBar: AppBar(
-                // TRY THIS: Try changing the color here to a specific color (to
-                // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-                // change color while the other colors stay the same.
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                // Here we take the value from the MainScreen
-                // object that was created by
-                // the App.build method, and use it to set our appbar title.
-                title: Text(widget.title),
-              ),
               body: page,
               floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
