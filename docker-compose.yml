@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  emission-backend:
+    build: ./emission-backend
+    ports:
+      - "8080:8080"
+    container_name: emission-backend
+    expose:
+      - 8080
+    depends_on:
+      - emission_db_container
+    links:
+      - emission_db_container
+    extra_hosts:
+      - "localhost:127.0.0.1"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://emission_db_container:5432/emission_db
+  emission_db_container:
+    image: postgres
+    container_name: emission_db_container
+    volumes:
+      - "/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=hackathon
+      - POSTGRES_DB=emission_db
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
