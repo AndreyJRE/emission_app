@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-      List<IconData> iconList = [Icons.add_box_outlined, Icons.announcement_outlined, Icons.ac_unit_outlined];
+      List<IconData> iconList = [Icons.add_box_outlined, Icons.announcement_outlined, Icons.ac_unit_outlined,Icons.access_alarm_rounded];
     return MaterialApp(
       theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
