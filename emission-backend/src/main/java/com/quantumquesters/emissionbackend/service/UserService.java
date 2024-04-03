@@ -1,5 +1,6 @@
 package com.quantumquesters.emissionbackend.service;
 
+import com.quantumquesters.emissionbackend.models.Activity;
 import com.quantumquesters.emissionbackend.models.User;
 import com.quantumquesters.emissionbackend.repository.UserRepository;
 import com.quantumquesters.emissionbackend.service.dtos.UserDto;
@@ -19,7 +20,7 @@ public class UserService {
         User user = new User();
         user.setUsername(username);
         User saved = userRepository.save(user);
-        return new UserDto(saved.getUserId(), saved.getUsername());
+        return new UserDto(saved.getUserId(), saved.getUsername(), 0, 0);
     }
 
 
@@ -37,12 +38,18 @@ public class UserService {
     public UserDto getUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return new UserDto(user.getUserId(), user.getUsername());
+        return new UserDto(user.getUserId(), user.getUsername(),
+                user.getActivities().stream().mapToDouble(Activity::getCo2InKg).sum(),
+                user.getActivities().stream().mapToDouble(Activity::getDistance).sum());
     }
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(user -> new UserDto(user.getUserId(), user.getUsername()))
+                .map(user -> {
+                    return new UserDto(user.getUserId(), user.getUsername(),
+                            user.getActivities().stream().mapToDouble(Activity::getCo2InKg).sum(),
+                            user.getActivities().stream().mapToDouble(Activity::getDistance).sum());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -50,7 +57,9 @@ public class UserService {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return user.getFriends().stream()
-                .map(friend -> new UserDto(friend.getUserId(), friend.getUsername()))
+                .map(friend -> new UserDto(friend.getUserId(), friend.getUsername(),
+                        friend.getActivities().stream().mapToDouble(Activity::getCo2InKg).sum(),
+                        friend.getActivities().stream().mapToDouble(Activity::getDistance).sum()))
                 .collect(Collectors.toList());
     }
 }

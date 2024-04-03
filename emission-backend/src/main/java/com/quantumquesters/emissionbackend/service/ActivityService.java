@@ -8,7 +8,9 @@ import com.quantumquesters.emissionbackend.service.dtos.activity.AddActivityDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,8 +28,14 @@ public class ActivityService {
 
     }
 
-    public List<ActivityDto> getActivitiesByUsername(String username) {
-        List<Activity> activities = activityRepository.findActivitiesByUsername(username);
+    public List<ActivityDto> getActivitiesByUsername(String username, Optional<LocalDate> dateOfActivity) {
+        List<Activity> activities;
+        if (dateOfActivity.isPresent()) {
+            activities = activityRepository.findActivitiesByUsernameAndDate(username, dateOfActivity.get());
+        } else {
+            activities = activityRepository.findActivitiesByUsername(username);
+
+        }
         return activities.stream()
                 .map(activity -> new ActivityDto(activity.getId(), activity.getActivityType(),
                         activity.getCreatedAt(), activity.getDistance(), activity.getCo2InKg()))
