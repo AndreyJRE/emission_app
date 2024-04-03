@@ -17,10 +17,10 @@ class EmissionListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sample Items'),
-        actions: [
+    return 
+    Row(children: [SizedBox(width: 20),
+    Column(
+          children: [
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
@@ -30,42 +30,57 @@ class EmissionListView extends StatelessWidget {
               Navigator.restorablePushNamed(context, SettingsView.routeName);
             },
           ), 
-          ],
-      ),
-
-      // To work with lists that may contain a large number of items, it’s best
-      // to use the ListView.builder constructor.
-      //
-      // In contrast to the default ListView constructor, which requires
-      // building all Widgets up front, the ListView.builder constructor lazily
-      // builds Widgets as they’re scrolled into view.
-      body: ListView.builder(
-        // Providing a restorationId allows the ListView to restore the
-        // scroll position when a user leaves and returns to the app after it
-        // has been killed while running in the background.
-        restorationId: 'sampleItemListView',
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = items[index];
-
-          return ListTile(
-            title: Text('SampleItem ${item.id}'),
-            leading: const CircleAvatar(
-              // Display the Flutter Logo image asset.
-              foregroundImage: AssetImage('assets/images/flutter_logo.png'),
+          Image.asset(
+            '/images/LogoApp.png'
+            ,width: 200, 
+            height: null,), 
+        
+          Column(children: [
+           Text('Welcome Back', style: TextStyle(fontSize: 24)), 
+           Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+            border: Border.all(color: Colors.black), // Add a black border
+            borderRadius: BorderRadius.circular(10), // Optional: Add rounded corners
             ),
-            onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                SampleItemDetailsView.routeName,
-              );
-            }
-          );
-        },
-      ),
-    );
+            width: 400, 
+            child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Enter your username here...', // Placeholder text
+            ),
+          )
+           )
+           , SizedBox(height: 8), 
+           OutlinedButton(
+              onPressed: () {
+                // Add your button press logic here
+              },
+              style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue), // Set background color
+              foregroundColor: MaterialStateProperty.all(Colors.white), // Set text color
+              minimumSize: MaterialStateProperty.all(Size(200, 50)), // Set width and height
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20), // Set border radius
+                ),
+              ),
+              side: MaterialStateProperty.all(
+                  BorderSide(color: Colors.black), // Set border color
+              ),
+              textStyle: MaterialStateProperty.all(
+                TextStyle(
+                  fontSize: 18, // Set text size to 18
+                  fontWeight: FontWeight.bold, // Make text bold
+                ),
+              ),
+              ),
+              child: Text('Log in '),
+            )
+
+          ],)
+             ,
+        ],
+      )],);
+      
   }
 }
