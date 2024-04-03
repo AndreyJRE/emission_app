@@ -21,7 +21,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     final items = ['WALK', 'BIKE', 'BIKE_ELECTRIC', 'CAR_DIESEL', 'CAR_BENZIN', 'CAR_ELECTRIC', 'BUS', 'TRAIN_SHORT', 'TRAIN_LONG', 'AIRPLANE'];
     return 
-    Row(children: [SizedBox(width: 20),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [SizedBox(width: 20),
     Column(children: [
       Image.asset(
             '/images/LogoApp.png'
