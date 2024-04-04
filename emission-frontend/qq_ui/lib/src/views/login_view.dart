@@ -13,8 +13,8 @@ import 'package:qq_ui/src/sample_feature/sample_item_details_view.dart';
 import '../settings/settings_view.dart';
 
 /// Displays a list of SampleItems.
-class EmissionListView extends StatelessWidget {
-  const EmissionListView({
+class LoginView extends StatelessWidget {
+  const LoginView({
     super.key,
     this.items = const [SampleItem(1), SampleItem(2), SampleItem(3)],
   });
@@ -107,7 +107,9 @@ class EmissionListView extends StatelessWidget {
     try{
     
     getUserData(controller.text).then((value) => vault.setUser(User.fromJson(jsonDecode(value.body)as Map<String, dynamic>) ));
-    print('getting activities');
+    print('getting Users');
+    getAllUsers().then((value) => (json.decode(value.body) as List<dynamic>).map((e) => User.fromJson(e)).toList()).then((value) => vault.setAllUsers(value));
+        print('getting Friends');
     getActivities(controller.text).then((value) => (json.decode(value.body) as List<dynamic>).map((e) => EmissionActivity.fromJson(e)).toList()).then((value) => vault.setActivities(value));}
     catch(e){
       print(e);

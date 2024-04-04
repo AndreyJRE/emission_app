@@ -37,6 +37,14 @@ Future<http.Response> getUserData(String username){
   return http.get(Uri.http(host,'/v1/api/users/$username'));
 }
 
+Future<http.Response> getFriends(String username){
+  return http.get(Uri.http(host,'/v1/api/users/$username/friends'));
+}
+
+Future<http.Response> addFriend(String username, String friend){
+  return http.post(Uri.http(host,'/v1/api/users/addFriend', {'username':username,'friendUsername': friend}));
+}
+
 Future<http.Response> getActivities(String username){
   return http.get(Uri.http(host,'/v1/api/activities', {'username': username}));
 }
@@ -44,8 +52,4 @@ Future<http.Response> addActivity(EmissionActivity activity) async {
   return http.post(
     Uri.http(host,'/v1/api/activities/add'), body: json.encode(activity), headers: headers
   );
-}
-
-Future<http.Response> getMyFriends(){
-  return http.get(Uri.parse('$host/v1/api/emissions'));
 }

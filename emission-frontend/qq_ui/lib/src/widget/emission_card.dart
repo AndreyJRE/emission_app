@@ -81,14 +81,6 @@ class EmissionCard extends StatelessWidget {
                 ),
               ),
             
-              TextButton(
-                onPressed: ()=>{},
-                child: Icon(
-                  
-                  Icons.check,
-                  color: Theme.of(context).cardColor,
-                ),
-              ),
             ],
           )),
     );

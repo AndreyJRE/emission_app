@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qq_ui/listeners/emissionValut.dart';
 import 'package:qq_ui/src/views/controll_view.dart';
-import 'package:qq_ui/src/views/task_screen.dart';
+import 'package:qq_ui/src/views/login_view.dart';
 
 import 'src/views/app.dart';
 import 'src/settings/settings_controller.dart';

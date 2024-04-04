@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:qq_ui/listeners/emissionValut.dart';
 import 'package:qq_ui/src/router/ActivityType.dart';
@@ -28,7 +29,7 @@ class _AddViewState extends State<AddView> {
   Widget build(BuildContext context) {
     EmissionVault taskState = context.watch<EmissionVault>();
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0,30,0,0),
+      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
       child: Container(
         child: Center(
           child: Column(
@@ -116,28 +117,49 @@ class _AddViewState extends State<AddView> {
                               child: Column(
                                 children: [
                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text('Produced Emissions:', style: TextStyle(color: Colors.black)),
-                                      Expanded(
-                                          child: Text(
-                                        ' ',
-                                        textAlign: TextAlign.center,
-                                      )),
-                                      Text('Total Emissions:', style: TextStyle(color: Colors.black)),
+                                      Text('Produced Emissions:',
+                                          style:
+                                              TextStyle(color: Colors.black)),
+
                                     ],
                                   ),
                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                          produced != null ?  Text('$produced', style: TextStyle(color: Colors.black),textAlign: TextAlign.center,): Text(''),
-                                      Expanded(
-                                          child: Text(
-                                        ' ',
-                                        textAlign: TextAlign.center,
-                                      )),
-                                          Text(taskState.user.totalEmissions.toString(), style: TextStyle(color: Colors.black),textAlign: TextAlign.left,)
-      
+                                      produced != null
+                                          ? Text(
+                                              '$produced',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                              textAlign: TextAlign.center,
+                                            )
+                                          : Text(''),
+                                    
                                     ],
                                   ),
+                                  SizedBox(width: 10),
+                                  Text('Total Emissions:',
+                                          style:
+                                              TextStyle(color: Colors.black,fontSize: 10)),
+                                  FAProgressBar(
+                                    direction: Axis.horizontal,
+                                    backgroundColor: Colors.blueGrey,
+                                    verticalDirection: VerticalDirection.up,
+                                    currentValue:
+                                        taskState.user.totalEmissions,
+                                    displayText: ' kg CO2',
+                                    maxValue: 2000,
+                                    progressGradient: LinearGradient(
+                                      colors: [
+                                        Colors.green.withOpacity(0.75),
+                                        Colors.red.withOpacity(0.75),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
@@ -164,7 +186,9 @@ class _AddViewState extends State<AddView> {
                             scrollDirection: Axis.vertical,
                             itemCount: taskState.actvitites.length,
                             itemBuilder: (BuildContext ctxt, int index) {
-                              return EmissionCard(task: taskState.actvitites[index].co2 , type: taskState.actvitites[index].activity);
+                              return EmissionCard(
+                                  task: taskState.actvitites[index].co2,
+                                  type: taskState.actvitites[index].activity);
                             },
                           ),
                         )
@@ -186,30 +210,36 @@ class _AddViewState extends State<AddView> {
       calculate(Calculation(activityType, _distanceController.text,
               _occupancyController.text))
           .then((value) {
-       setState(() {
-        produced = int.parse(value.body);
-       });
+        setState(() {
+          produced = int.parse(value.body);
+        });
       });
     } else {
       // Show an error message
     }
   }
-  
+
   void checkForNewActivity(EmissionVault vault) {
-    if(_distanceController.text.isNotEmpty && _occupancyController.text.isNotEmpty && produced != null){
-        addActivity(EmissionActivity(co2: produced.toString(), distance: _distanceController.text, activity: activityType,username: vault.user.name)).then((value) {
+    if (_distanceController.text.isNotEmpty &&
+        _occupancyController.text.isNotEmpty &&
+        produced != null) {
+      addActivity(EmissionActivity(
+              co2: produced.toString(),
+              distance: _distanceController.text,
+              activity: activityType,
+              username: vault.user.name))
+          .then((value) {
+        print(value.body);
+        EmissionActivity emissionActivity = EmissionActivity.fromJson(jsonDecode(value.body));
+        vault.addActivity(emissionActivity);
+        vault.addEmissionValue(double.parse(emissionActivity.co2));
 
-          print(value.body);
-          vault.addActivity(EmissionActivity.fromJson(jsonDecode(value.body)) );
-
-        }      );
-        setState(() {
-          produced = null;
-          _distanceController.clear();
-          _occupancyController.clear();
-        });
-
+      });
+      setState(() {
+        produced = null;
+        _distanceController.clear();
+        _occupancyController.clear();
+      });
     }
-
   }
 }

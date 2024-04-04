@@ -5,9 +5,35 @@ import 'package:qq_ui/src/router/emissionActivity.dart';
 class EmissionVault extends ChangeNotifier {
 User user = User.Dummy('temp');
 List<EmissionActivity> actvitites = [];
+List<User> friends = [];
+List<User> allUsers = [];
 bool loading = false;
 bool loggedIn = false;
 
+void addEmissionValue(double val){
+  user.totalEmissions += val;
+  notifyListeners();
+}
+void setAllUsers(List<User> users){
+  this.allUsers = users;
+  notifyListeners();
+}
+List<User> getAllUsers(){
+  return allUsers;
+}
+
+setFriends(List<User> friends){
+  this.friends = friends;
+  notifyListeners();
+}
+
+addFriend(User friend){
+  friends.add(friend);
+  notifyListeners();
+}
+getMyFriends(){
+  return friends;
+}
 void startLoading(){
   loading = true;
   loggedIn = true;
@@ -42,5 +68,6 @@ void setUser(User userNew){
 User getUser(){
   return user;
   }
+
 
 }
