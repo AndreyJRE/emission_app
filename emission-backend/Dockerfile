@@ -1,10 +1,28 @@
+FROM mcr.microsoft.com/openjdk/jdk:17-ubuntu as runtime-build
 
-FROM maven:3-openjdk-17-slim AS build
-COPY src /home/app/src
-COPY pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean install -DskipTests
+# Create a custom Java runtime
+RUN $JAVA_HOME/bin/jlink \
+         --add-modules java.base \
+         --strip-debug \
+         --no-man-pages \
+         --no-header-files \
+         --compress=2 \
+         --output /javaruntime
 
-FROM openjdk:17-jdk-slim
-COPY --from=build /home/app/target/emission-*.jar emission_backend.jar
-ENTRYPOINT ["java","-jar","/emission_backend.jar"]
+# Define your base image. You may use any base OS and version of your choice.
+FROM debian:buster-slim
+ENV LANG en_US.UTF-8
+ENV JAVA_HOME /usr/lib/jvm/msopenjdk-17-amd64
+ENV PATH "${JAVA_HOME}/bin:${PATH}"
+COPY --from=runtime-build /javaruntime $JAVA_HOME
+
+FROM mcr.microsoft.com/openjdk/jdk:17-ubuntu
+
+WORKDIR /app
+COPY . /app
+
+RUN ./mvnw  -B -DskipTests clean package
+
 EXPOSE 8080
+
+CMD ["java", "-jar", "target/emission-backend-0.0.1-SNAPSHOT.jar"]
