@@ -2,7 +2,9 @@ package com.quantumquesters.emissionbackend.service;
 
 
 import com.quantumquesters.emissionbackend.models.Activity;
+import com.quantumquesters.emissionbackend.models.User;
 import com.quantumquesters.emissionbackend.repository.ActivityRepository;
+import com.quantumquesters.emissionbackend.repository.UserRepository;
 import com.quantumquesters.emissionbackend.service.dtos.activity.ActivityDto;
 import com.quantumquesters.emissionbackend.service.dtos.activity.AddActivityDto;
 import lombok.AllArgsConstructor;
@@ -18,11 +20,15 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
 
+    private final UserRepository userRepository;
+
     public ActivityDto addActivity(AddActivityDto addActivityDto) {
+        User user = userRepository.findUserByUsername(addActivityDto.username()).orElseThrow(() -> new RuntimeException("User not found"));
         Activity activity = new Activity();
         activity.setActivityType(addActivityDto.activityType());
         activity.setDistance(addActivityDto.distance());
         activity.setCo2InKg(addActivityDto.co2());
+        activity.setUser(user);
         Activity saved = activityRepository.save(activity);
         return new ActivityDto(saved.getId(), saved.getActivityType(), saved.getCreatedAt(), saved.getDistance(), saved.getCo2InKg());
 

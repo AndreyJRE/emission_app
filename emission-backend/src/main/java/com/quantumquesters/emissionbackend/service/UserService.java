@@ -45,11 +45,9 @@ public class UserService {
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(user -> {
-                    return new UserDto(user.getUserId(), user.getUsername(),
-                            user.getActivities().stream().mapToDouble(Activity::getCo2InKg).sum(),
-                            user.getActivities().stream().mapToDouble(Activity::getDistance).sum());
-                })
+                .map(user -> new UserDto(user.getUserId(), user.getUsername(),
+                        user.getActivities().stream().mapToDouble(Activity::getCo2InKg).sum(),
+                        user.getActivities().stream().mapToDouble(Activity::getDistance).sum()))
                 .collect(Collectors.toList());
     }
 
