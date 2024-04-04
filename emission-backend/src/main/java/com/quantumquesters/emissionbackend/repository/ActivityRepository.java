@@ -10,7 +10,7 @@ import java.util.List;
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
 
-    @Query("SELECT a FROM Activity a WHERE a.user.username = :username")
+    @Query("SELECT a FROM Activity a WHERE a.user.username = ?1")
     List<Activity> findActivitiesByUsername(String username);
 
     @Query("SELECT a FROM Activity a WHERE a.user.username = ?1 and FUNCTION('DATE', a.createdAt) = ?2")

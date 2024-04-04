@@ -24,12 +24,14 @@ public class ActivityService {
 
     public ActivityDto addActivity(AddActivityDto addActivityDto) {
         User user = userRepository.findUserByUsername(addActivityDto.username()).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("User found: " + user.getUsername() + " " + user.getUserId());
         Activity activity = new Activity();
         activity.setActivityType(addActivityDto.activityType());
         activity.setDistance(addActivityDto.distance());
         activity.setCo2InKg(addActivityDto.co2());
         activity.setUser(user);
         Activity saved = activityRepository.save(activity);
+        System.out.println("Activity saved: " + saved.getUser().getUsername());
         return new ActivityDto(saved.getId(), saved.getActivityType(), saved.getCreatedAt(), saved.getDistance(), saved.getCo2InKg());
 
     }
