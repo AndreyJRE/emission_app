@@ -1,6 +1,30 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:qq_ui/listeners/emissionValut.dart';
+import 'package:qq_ui/src/widget/emission_card.dart';
+import 'package:table_calendar/table_calendar.dart';
 
+List<Color> lineColor = [
+    Color(0xfff3f169),
+];
+
+List<LineChartBarData> lineChartBarData = [
+  LineChartBarData(
+    color: Colors.black,
+    isCurved: true,
+    spots: [
+      FlSpot(1, 2),
+  FlSpot(2, 500),
+  FlSpot(3, 600),
+  FlSpot(4, 200),
+  FlSpot(5, 300),
+  FlSpot(6,400),
+  FlSpot(7, 600),
+    ]
+  )
+];
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({
     super.key,
@@ -9,71 +33,136 @@ class CalendarScreen extends StatefulWidget {
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
 }
+class LineChartContent extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return LineChart(
+      LineChartData(
+        minX: 1,
+        minY: 0,
+        maxX: 10,
+        maxY: 2000,
+        lineBarsData: lineChartBarData,
+      ),
+    );
+  }
+}
+
 
 class _CalendarScreenState extends State<CalendarScreen> {
   late bool isShowingMainData = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Calendar Screen'),
-      ),
-      body: Center(
-        child: AspectRatio(
-          aspectRatio: 1.23,
-          child: Stack(
+    EmissionVault taskState = context.watch<EmissionVault>();
+    return Container(
+          color: Color(0xfff0f0f0),
+          child: ListView(
+            padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 37,
-                  ),
-                  const Text(
-                    'Monthly Sales',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 37,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16, left: 6),
-                      child: LineChart(
-                        isShowingMainData ? sampleData1 : sampleData2,
-                        duration: const Duration(milliseconds: 250),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.refresh,
-                  color: Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ChartContainer(
+                  title: 'Your Last Emissions', 
+                  color: Colors.grey.shade300, 
+                  chart: LineChartContent(),
                 ),
-                onPressed: () {
-                  setState(() {
-                    isShowingMainData = !isShowingMainData;
-                  });
-                },
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+              ), SizedBox(height: 20),
+              Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.grey.shade100),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text('Produced Emissions:',
+                                          style:
+                                              TextStyle(color: Colors.black)),
+
+                                    ],
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text('Total Emissions:',
+                                          style:
+                                              TextStyle(color: Colors.black,fontSize: 10)),
+                                  FAProgressBar(
+                                    direction: Axis.horizontal,
+                                    backgroundColor: Colors.blueGrey,
+                                    verticalDirection: VerticalDirection.up,
+                                    currentValue:
+                                        taskState.user.totalEmissions,
+                                    displayText: ' kg CO2',
+                                    maxValue: 2000,
+                                    progressGradient: LinearGradient(
+                                      colors: [
+                                        Colors.green.withOpacity(0.75),
+                                        Colors.red.withOpacity(0.75),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+            Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.grey.shade100,
+                              border: Border.all(
+                                color: Colors.grey.shade400,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade400,
+                                  blurRadius: 4.0,
+                                  spreadRadius: 0.0,
+                                  offset: Offset(0, 30),
+                                )
+                              ]),
+                          height: 200.0,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: taskState.actvitites.length,
+                            itemBuilder: (BuildContext ctxt, int index) {
+                              return EmissionCard(
+                                  task: taskState.actvitites[index].co2,
+                                  type: taskState.actvitites[index].activity);
+                            },
+                          ),
+                        )],
+          ));
   }
+
+  List<Color> lineColor = [
+    Color(0xfff3f169),
+];
+
+List<LineChartBarData> lineChartBarData = [
+  LineChartBarData(
+    color: Colors.black,
+    isCurved: true,
+    spots: [
+      FlSpot(1, 8),
+      FlSpot(2, 12.4),
+      FlSpot(3, 10.8),
+      FlSpot(4, 9),
+      FlSpot(5, 8),
+      FlSpot(6, 8.6),
+      FlSpot(7, 10)
+    ]
+  )
+];
 
   LineChartData get sampleData1 => LineChartData(
     lineTouchData: lineTouchData1,
@@ -345,4 +434,50 @@ class _CalendarScreenState extends State<CalendarScreen> {
       FlSpot(13, 4.5),
     ],
   );
+
+  
+}
+class ChartContainer extends StatelessWidget {
+  final Color color;
+  final String title;
+  final Widget chart;
+
+  const ChartContainer({
+    Key? key,
+    required this.title,
+    required this.color,
+    required this.chart,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.95,
+        height: MediaQuery.of(context).size.width * 0.95 * 0.65,
+        padding: EdgeInsets.fromLTRB(0, 10, 20, 10),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+                child: Container(
+              padding: EdgeInsets.only(top: 10),
+              child: chart,
+            ))
+          ],
+        ),
+      ),
+    );
+  }
 }
