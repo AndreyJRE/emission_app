@@ -59,7 +59,7 @@ class EmissionCard extends StatelessWidget {
         fontStyle: FontStyle.italic,
         fontSize: 23.0);
     return Card(
-      color: theme.colorScheme.primary,
+      color: Colors.grey.shade50,
       child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -75,8 +75,11 @@ class EmissionCard extends StatelessWidget {
               SizedBox(width: 10.0),
               Expanded(
                 child: Text(
-                  task,
-                  style: style,
+                  '$task CO2 kg',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),

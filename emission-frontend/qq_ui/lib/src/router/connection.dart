@@ -41,7 +41,7 @@ Future<http.Response> getFriends(String username){
   return http.get(Uri.http(host,'/v1/api/users/$username/friends'));
 }
 
-Future<http.Response> addFriend(String username, String friend){
+Future<http.Response> addFriendfromUsername(String username, String friend){
   return http.post(Uri.http(host,'/v1/api/users/addFriend', {'username':username,'friendUsername': friend}));
 }
 
