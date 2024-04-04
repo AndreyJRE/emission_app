@@ -133,8 +133,7 @@ class ButtonWidget extends StatelessWidget {
     return ElevatedButton(
   onPressed: fun as VoidCallback?,
   style: ElevatedButton.styleFrom(
-    primary: color, // Background color
-    onPrimary: Colors.black, // Text color
+    foregroundColor: Colors.black, backgroundColor: color, // Text color
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0), // Rounded corners
       side: BorderSide(color: Colors.black.withOpacity(0.2)), // Border color
@@ -207,9 +206,9 @@ class AvatarWidget extends StatelessWidget {
                         
         
                     Text(
-                      'Emissions: ${friend.totalEmissions} kg CO2',
+                      '-emissions: ${friend.totalEmissions} kg CO2',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                   ],
