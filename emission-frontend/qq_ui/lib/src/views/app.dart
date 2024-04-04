@@ -2,6 +2,8 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:qq_ui/listeners/emissionValut.dart';
 import 'package:qq_ui/src/router/ActivityType.dart';
 import 'package:qq_ui/src/views/add_view.dart';
 import 'package:qq_ui/src/views/calendar_screen.dart';
@@ -37,7 +39,7 @@ class MainScreen extends StatefulWidget {
 class _MyHomePageState extends State<MainScreen> {
   int _counter = 0;
   int index = 0;
-  Widget page = EmissionListView();
+  Widget page = AddView();
   var creating = false;
   void switchOffScreen(){
        setState(() {
@@ -52,7 +54,7 @@ class _MyHomePageState extends State<MainScreen> {
       index = state;
       switch (index) {
         case 0:
-          page = EmissionListView();
+          page = AddView();
           break;
         case 1:
          page = AddView();
@@ -66,7 +68,8 @@ class _MyHomePageState extends State<MainScreen> {
         default:
 
       }
-    });}
+    });}else{setState(()=>
+    page = AddView());}
   }
 
   
@@ -103,7 +106,7 @@ class _MyHomePageState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
       List<IconData> iconList = [Icons.add_box_outlined, Icons.announcement_outlined, Icons.ac_unit_outlined,Icons.access_alarm_rounded];
-   
+    EmissionVault taskState = context.watch<EmissionVault>();
 
     return MaterialApp(
       theme: ThemeData(
@@ -113,57 +116,70 @@ class _MyHomePageState extends State<MainScreen> {
                 backgroundColor: Colors.black,
               ),
             ),
-
-            home: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: page,
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 4,
-              offset: Offset(0, 2),
-            ),
-          ],
-          border: Border.all(
-            color: Colors.grey.shade300,
-            width: 2,
-          ),
-        ),
-        child: FloatingActionButton(
-          shape: const CircleBorder(),
-          backgroundColor: Colors.white,
-          child: Icon(
-            Icons.add,
-            color: Colors.black,
-          ),
-          onPressed: () => {},
-        ),
-      ),
-         bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-            itemCount: iconList.length,
-            backgroundColor: Colors.black,
-            tabBuilder: (int index, bool isActive) {
-              return Icon(
-                iconList[index],
-                size: 24,
-                color: isActive ? Colors.amber : Colors.white,
+            home: Material(
+              child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 1000),
+            transitionBuilder: (child, animation) {
+              return FadeTransition(
+                opacity: CurvedAnimation(
+                    parent: animation, curve: const Interval(0.5, 1)),
+                child: child,
               );},
-            activeIndex: index,
-            gapLocation: GapLocation.center,
-            notchSmoothness: NotchSmoothness.defaultEdge,
-            borderColor: Colors.grey.shade300,
-            borderWidth: 3,
-            notchMargin: 4,
-            leftCornerRadius: 0,
-            rightCornerRadius: 0,
-            onTap: (index) => switchState(index)),
-            //other params
-         ),
+              child: taskState.loading? LoadingView(text: 'Loading...'): MaterialApp(
+                home: Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  body: creating? AddView():page,
+                  floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+                      floatingActionButton: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+                          ],
+                          border: Border.all(
+                color: Colors.grey.shade300,
+                width: 2,
+                          ),
+                        ),
+                        child: FloatingActionButton(
+                          shape: const CircleBorder(),
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                Icons.add,
+                color: Colors.black,
+                          ),
+                          onPressed: () => {setState(() => creating=true)},
+                        ),
+                      ),
+                         bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+                itemCount: iconList.length,
+                backgroundColor: Colors.black,
+                tabBuilder: (int index, bool isActive) {
+                  return Icon(
+                    iconList[index],
+                    size: 24,
+                    color: isActive ? Colors.amber : Colors.white,
+                  );},
+                activeIndex: index,
+                gapLocation: GapLocation.center,
+                notchSmoothness: NotchSmoothness.defaultEdge,
+                borderColor: Colors.grey.shade300,
+                borderWidth: 3,
+                notchMargin: 4,
+                leftCornerRadius: 0,
+                rightCornerRadius: 0,
+                onTap: (index) => {
+                  switchOffScreen(),
+                  switchState(index)}),
+                //other params
+                         ),
+              ),
+            ),
 
               
               /* BottomNavigationBar(
@@ -185,7 +201,7 @@ class _MyHomePageState extends State<MainScreen> {
                 currentIndex: index,
                 onTap: ((value) => switchState(value)),
               ),*/
-          );
+          ));
   }
 }
 

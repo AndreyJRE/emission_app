@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qq_ui/src/router/ActivityType.dart';
 
 enum TYPE {
 WALK, BIKE, BIKE_ELECTRIC, CAR_DIESEL, CAR_BENZIN, CAR_ELECTRIC, BUS, TRAIN_SHORT, TRAIN_LONG, AIRPLANE;
@@ -8,34 +9,36 @@ class EmissionCard extends StatelessWidget {
   const EmissionCard({
     super.key,
     required this.task,
-    this.type = TYPE.WALK,
+    this.type = ActivityType.BUS,
   });
 
   final String task;
-  final TYPE type;
+  final ActivityType type;
 
   Icon getIcon() {
     switch (type) {
-          case TYPE.WALK:
-            return Icon(Icons.directions_walk);
-          case TYPE.BIKE:
-            return Icon(Icons.directions_bike);
-          case TYPE.BIKE_ELECTRIC:
-            return Icon(Icons.electric_bike);
-          case TYPE.CAR_DIESEL:
-            return Icon(Icons.directions_car);
-          case TYPE.CAR_BENZIN:
-            return Icon(Icons.local_gas_station);
-          case TYPE.CAR_ELECTRIC:
-            return Icon(Icons.electric_car);
-          case TYPE.BUS:
-            return Icon(Icons.directions_bus);
-          case TYPE.TRAIN_SHORT:
-            return Icon(Icons.train);
-          case TYPE.TRAIN_LONG:
-            return Icon(Icons.train);
-          case TYPE.AIRPLANE:
-            return Icon(Icons.airplanemode_active);
+      case ActivityType.WALK:
+        return Icon(Icons.directions_walk);
+      case ActivityType.BIKE:
+        return Icon(Icons.directions_bike);
+      case ActivityType.BIKE_ELECTRIC:
+        return Icon(Icons.electric_bike);
+      case ActivityType.CAR_DIESEL:
+        return Icon(Icons.directions_car);
+      case ActivityType.CAR_BENZIN:
+        return Icon(Icons.local_gas_station);
+      case ActivityType.CAR_ELECTRIC:
+        return Icon(Icons.electric_car);
+      case ActivityType.BUS:
+        return Icon(Icons.directions_bus);
+      case ActivityType.TRAIN_SHORT:
+        return Icon(Icons.train);
+      case ActivityType.TRAIN_LONG:
+        return Icon(Icons.train);
+      case ActivityType.AIRPLANE:
+        return Icon(Icons.airplanemode_active);
+      default:
+        return Icon(Icons.directions_walk);
     }
   }
 

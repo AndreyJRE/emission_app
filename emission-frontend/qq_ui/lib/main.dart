@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qq_ui/listeners/emissionValut.dart';
+import 'package:qq_ui/src/views/controll_view.dart';
+import 'package:qq_ui/src/views/task_screen.dart';
 
 import 'src/views/app.dart';
 import 'src/settings/settings_controller.dart';
@@ -16,5 +20,9 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
-  runApp(MainScreen(title: 'Emission App'));
+  EmissionVault temp = EmissionVault();
+  runApp(    ChangeNotifierProvider<EmissionVault>(
+      create: (context) => temp,
+      child: ControllView(),
+    ));
 }

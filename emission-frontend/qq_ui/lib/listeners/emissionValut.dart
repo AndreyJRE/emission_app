@@ -4,25 +4,39 @@ import 'package:qq_ui/src/router/emissionActivity.dart';
 
 class EmissionVault extends ChangeNotifier {
 User user = User.Dummy('temp');
-List<EmissionActivity> emissions = [];
+List<EmissionActivity> actvitites = [];
+bool loading = false;
+bool loggedIn = false;
 
-
-void addEmission(EmissionActivity emission){
-  emissions.add(emission);
+void startLoading(){
+  loading = true;
+  loggedIn = true;
   notifyListeners();
-} 
-
-void setEmissions(List<EmissionActivity> emissions){
-  this.emissions = emissions;
-  notifyListeners();
-} 
-
-getEmissions(){
-  return emissions;
+  Future.delayed(Duration(seconds: 2), (){
+    loading = false;
+    print('loading $loading loggegIn $loggedIn');
+    notifyListeners();
+  });
+      print('loading $loading loggegIn $loggedIn');
 }
 
-void setUser(String username, double emission){
-  user = User(name: username, totalEmissions: emission);
+void addActivity(EmissionActivity emission){
+  actvitites.add(emission);
+  print(actvitites.length);
+  notifyListeners();
+} 
+
+void setActivities(List<EmissionActivity> emissions){
+  this.actvitites = emissions;
+  notifyListeners();
+} 
+
+getActvities(){
+  return actvitites;
+}
+
+void setUser(User userNew){
+  user = userNew;
   notifyListeners();
 }
 User getUser(){

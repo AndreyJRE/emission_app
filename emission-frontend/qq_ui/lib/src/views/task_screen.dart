@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qq_ui/listeners/emissionValut.dart';
+import 'package:qq_ui/src/router/User.dart';
+import 'package:qq_ui/src/router/connection.dart';
+import 'package:qq_ui/src/router/emissionActivity.dart';
 import 'package:qq_ui/src/sample_feature/sample_item.dart';
 import 'package:qq_ui/src/sample_feature/sample_item_details_view.dart';
 
@@ -16,72 +23,119 @@ class EmissionListView extends StatelessWidget {
   final List<SampleItem> items;
 
   @override
-  Widget build(BuildContext context) {
-    return 
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [SizedBox(width: 20),
-    Column(
+ Widget build(BuildContext context) {
+  EmissionVault taskState = context.watch<EmissionVault>();
+  TextEditingController controller = TextEditingController();
+  return MaterialApp(
+    home: Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
-            },
-          ), 
-          Image.asset(
-            '/images/LogoApp.png'
-            ,width: 200, 
-            height: null,), 
-        
-          Column(children: [
-           Text('Welcome Back'), 
-           Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-            border: Border.all(color: Colors.black), // Add a black border
-            borderRadius: BorderRadius.circular(10), // Optional: Add rounded corners
-            ),
-            width: 400, 
-            child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Enter your username here...', // Placeholder text
-            ),
-          )
-           )
-           , SizedBox(height: 8), 
-           OutlinedButton(
+            IconButton(
+              icon: const Icon(Icons.settings),
               onPressed: () {
-                // Add your button press logic here
+                Navigator.restorablePushNamed(context, SettingsView.routeName);
+              },
+            ),
+            Image.asset(
+              '/images/LogoApp.png',
+              width: 200,
+              height: null,
+            ),
+            Text('Welcome Back'),
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: 'Enter your username here...',
+                ),
+              ),
+            ),
+            SizedBox(height: 8),
+            OutlinedButton(
+              onPressed: () {
+                login(controller, taskState);
               },
               style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue), // Set background color
-              foregroundColor: MaterialStateProperty.all(Colors.white), // Set text color
-              minimumSize: MaterialStateProperty.all(Size(200, 50)), // Set width and height
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20), // Set border radius
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+                minimumSize: MaterialStateProperty.all(Size(200, 50)),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                side: MaterialStateProperty.all(
+                  BorderSide(color: Colors.black),
+                ),
+                textStyle: MaterialStateProperty.all(
+                  TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              side: MaterialStateProperty.all(
-                  BorderSide(color: Colors.black), // Set border color
-              ),
-              textStyle: MaterialStateProperty.all(
-                TextStyle(
-                  fontWeight: FontWeight.bold, // Make text bold
-                ),
-              ),
-              ),
-              child: Text('Log in '),
-            )
+              child: Text('Log in'),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
-          ],)
-             ,
-        ],
-      )],);
-      
+
+
+
+  void login(TextEditingController controller,EmissionVault vault ){
+    print(controller.text);
+    try{
+    putUser(controller.text).then((value) => print(value.body));}
+    catch(e){
+      print('already exists');
+    }
+    try{
+    
+    getUserData(controller.text).then((value) => vault.setUser(User.fromJson(jsonDecode(value.body)as Map<String, dynamic>) ));
+    print('getting activities');
+    getActivities(controller.text).then((value) => (json.decode(value.body) as List<dynamic>).map((e) => EmissionActivity.fromJson(e)).toList()).then((value) => vault.setActivities(value));}
+    catch(e){
+      print(e);
+      vault.setUser(User.Dummy(controller.text));
+    }
+    vault.startLoading();
+    
+
+    
+  }
+}
+
+class LoadingView extends StatelessWidget {
+  final String text;
+  const LoadingView({required this.text, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+        child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Row(),
+                const SizedBox(height: 50),
+                Text(
+                  text,
+                  style: const TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                )
+              ],
+            )));
   }
 }
