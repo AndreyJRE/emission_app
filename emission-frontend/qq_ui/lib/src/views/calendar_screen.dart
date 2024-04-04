@@ -26,7 +26,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       children: [SizedBox(width: 20),
     Column(children: [
       Image.asset(
-            '/images/LogoApp.png'
+            'assets/images/LogoApp_light.png'
             ,width: 200, 
             height: null,), 
       Text('Insert your activity data: ', style: TextStyle(fontSize: 24)), 

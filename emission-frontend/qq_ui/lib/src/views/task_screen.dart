@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:qq_ui/listeners/emissionValut.dart';
 import 'package:qq_ui/src/router/User.dart';
@@ -27,6 +28,10 @@ class EmissionListView extends StatelessWidget {
   EmissionVault taskState = context.watch<EmissionVault>();
   TextEditingController controller = TextEditingController();
   return MaterialApp(
+    theme: ThemeData(
+           textTheme:  GoogleFonts.latoTextTheme(),
+    ),
+
     home: Scaffold(
       body: Center(
         child: Column(
@@ -39,11 +44,11 @@ class EmissionListView extends StatelessWidget {
               },
             ),
             Image.asset(
-              '/images/LogoApp.png',
+              'assets/images/LogoApp_light.png',
               width: 200,
               height: null,
             ),
-            Text('Welcome Back'),
+            Text('Welcome Back', style: GoogleFonts.lato(),),
             Container(
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
