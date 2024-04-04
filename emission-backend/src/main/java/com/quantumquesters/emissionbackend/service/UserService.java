@@ -17,6 +17,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserDto addUser(String username) {
+        if (username.trim().isEmpty()) {
+            throw new RuntimeException("Username cannot be empty");
+        }
+        userRepository.findUserByUsername(username).ifPresent(user -> {
+            throw new RuntimeException("User already exists");
+        });
         User user = new User();
         user.setUsername(username);
         User saved = userRepository.save(user);
