@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qq_ui/src/router/User.dart';
+import 'package:qq_ui/src/router/connection.dart';
 import 'package:qq_ui/src/router/emissionActivity.dart';
 
 class EmissionVault extends ChangeNotifier {
@@ -28,6 +29,7 @@ setFriends(List<User> friends){
 }
 
 addFriend(User friend){
+  addFriendfromUsername(user.name, friend.name);
   friends.add(friend);
   notifyListeners();
 }

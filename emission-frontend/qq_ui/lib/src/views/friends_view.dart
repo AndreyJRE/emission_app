@@ -41,14 +41,14 @@ class _FriendsViewState extends State<FriendsView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Max',
+                            taskState.user.name,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            'Mustermann',
+                            '',
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -93,7 +93,7 @@ class _FriendsViewState extends State<FriendsView> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0), // Rounded corners
                         ),
-                        child: AvatarWidgetAdd(friend: friend),
+                        child: AvatarWidgetAdd(friend: friend,controller: taskState,),
                       );
                     }).toList()
                    :taskState.friends.map((friend) {
@@ -223,9 +223,11 @@ class AvatarWidget extends StatelessWidget {
 
 class AvatarWidgetAdd extends StatelessWidget {
   final User friend;
+  final EmissionVault controller;
 
   const AvatarWidgetAdd({
     super.key,
+    required this.controller,
     required this.friend,
   });
 
@@ -266,7 +268,9 @@ class AvatarWidgetAdd extends StatelessWidget {
             
             ),              
                 TextButton(
-                onPressed: ()=>{},
+                onPressed: ()=>{
+                  controller.addFriend(friend)
+                },
                 child: Icon(
                   
                   Icons.add,

@@ -9,6 +9,7 @@ import 'package:qq_ui/src/router/connection.dart';
 import 'package:qq_ui/src/router/emissionActivity.dart';
 import 'package:qq_ui/src/sample_feature/sample_item.dart';
 import 'package:qq_ui/src/sample_feature/sample_item_details_view.dart';
+import 'package:qq_ui/src/views/friends_view.dart';
 
 import '../settings/settings_view.dart';
 
@@ -34,60 +35,35 @@ class LoginView extends StatelessWidget {
 
     home: Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                Navigator.restorablePushNamed(context, SettingsView.routeName);
-              },
-            ),
-            Image.asset(
-              'assets/images/LogoApp_light.png',
-              width: 200,
-              height: null,
-            ),
-            Text('Welcome Back', style: GoogleFonts.lato(),),
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/LogoApp_light.png',
+                width: 400,
+                height: null,
               ),
-              child: TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  hintText: 'Enter your username here...',
+              SizedBox(height: 40),
+              Text('Welcome Back'),
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              ),
-            ),
-            SizedBox(height: 8),
-            OutlinedButton(
-              onPressed: () {
-                login(controller, taskState);
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-                minimumSize: MaterialStateProperty.all(Size(200, 50)),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                side: MaterialStateProperty.all(
-                  BorderSide(color: Colors.black),
-                ),
-                textStyle: MaterialStateProperty.all(
-                  TextStyle(
-                    fontWeight: FontWeight.bold,
+                child: TextField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your username here...',
                   ),
                 ),
               ),
-              child: Text('Log in'),
-            ),
-          ],
+              SizedBox(height: 8),
+              ButtonWidget(fun:  () => login(controller, taskState), text: 'Login', color: Colors.blue.shade400),
+            ],
+          ),
         ),
       ),
     ),
@@ -135,7 +111,11 @@ class LoadingView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Row(),
+                              Image.asset(
+                'assets/images/LogoApp_light.png',
+                width: 400,
+                height: null,
+              ),
                 const SizedBox(height: 50),
                 Text(
                   text,
