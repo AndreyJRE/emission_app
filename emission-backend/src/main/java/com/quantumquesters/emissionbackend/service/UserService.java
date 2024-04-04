@@ -30,12 +30,17 @@ public class UserService {
         User friend = userRepository.findUserByUsername(friendUsername)
                 .orElseThrow(() -> new RuntimeException("Friend not found"));
         user.getFriends().add(friend);
+        friend.getFriends().add(user);
         userRepository.save(user);
+        userRepository.save(friend);
 
     }
 
 
     public UserDto getUserByUsername(String username) {
+        if (username.trim().isEmpty()) {
+            throw new RuntimeException("Username cannot be empty");
+        }
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return new UserDto(user.getUserId(), user.getUsername(),
